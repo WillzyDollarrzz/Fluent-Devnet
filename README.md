@@ -19,7 +19,7 @@ mkdir fluent && cd fluent && wget -q https://raw.githubusercontent.com/WillzyDol
 
 
 Thanks For Using my Guide! Follow me on GitHub For More Guides Like This!
-- If you encounter any errors or want to reach out to me about other projects, you can do so [here](https://x.com/willzydollarrzz) 
+- If you encounter any errors or want to reach out to me about other projects, you can do so [here](https://x.com/justwillzy_) 
 
 
 
