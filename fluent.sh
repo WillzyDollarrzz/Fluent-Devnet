@@ -1,5 +1,9 @@
 #!/bin/bash
-curl -s https://raw.githubusercontent.com/WillzyDollarrzz/willzy/main/inscription.txt
+curl -s "https://raw.githubusercontent.com/WillzyDollarrzz/willzy/main/inscription.txt" \
+  | sed 's/\\\\033/\033/g' \
+  | while IFS= read -r line; do
+      echo -e "$line"
+    done
 
 sleep 2
 
