@@ -78,10 +78,10 @@ require("@nomiclabs/hardhat-vyper");
 module.exports = {
   networks: {
     fluent_devnet1: {
-      url: 'https://rpc.dev.thefluent.xyz/', 
+      url: 'https://rpc.dev.gblend.xyz', 
       chainId: 20993, 
       accounts: [
-        \`\${PRIVATE_KEY}\`
+        "${PRIVATE_KEY}"
       ], 
     },
   },
@@ -94,13 +94,14 @@ module.exports = {
 };
 EOF
 
+
 echo "updated hardhat.config.js with your private key."
 
 cat > check-balance.js <<EOF
 const { ethers } = require("hardhat");
 
 async function main() {
-  const provider = ethers.getDefaultProvider("https://rpc.dev.thefluent.xyz/");
+  const provider = ethers.getDefaultProvider("https://rpc.dev.gblend.xyz/");
   const wallet = new ethers.Wallet(process.argv[2], provider);
   const balance = await wallet.getBalance();
   console.log("Your fluent eth balance is:", ethers.utils.formatEther(balance), "ETH");
@@ -158,7 +159,7 @@ async function main() {
 
   console.log("Contract address:", contract.address);
 
-  const explorerUrl = \`https://blockscout.dev.thefluent.xyz/tx/\${transactionHash}\`;
+  const explorerUrl = \`https://blockscout.dev.gblend.xyz/tx/\${transactionHash}\`;
   console.log("Transaction link:", explorerUrl);
 }
 
