@@ -1,8 +1,8 @@
 #!/bin/bash
+curl -s https://raw.githubusercontent.com/WillzyDollarrzz/willzy/main/inscription.txt
 
-# -------------------------------
-# Install Dependencies
-# -------------------------------
+sleep 2
+
 echo "Installing dependencies..."
 sudo apt update && sudo apt upgrade -y
 
@@ -34,9 +34,6 @@ EOF
 
 npm install
 
-# -------------------------------
-# Faucet Check
-# -------------------------------
 read -p "Have you claimed faucet tokens from https://faucet.dev.gblend.xyz/? (y/n): " faucetClaimed
 
 if [[ "$faucetClaimed" =~ ^[Nn]$ ]]; then
@@ -53,15 +50,14 @@ if [[ "$faucetClaimed" =~ ^[Nn]$ ]]; then
   fi
 fi
 
-# -------------------------------
-# Get Private Key and Update Config
-# -------------------------------
-read -p "Enter your Private Key (without 0x prefix): " PRIVATE_KEY
+read -p "enter your private key: " PRIVATE_KEY
+
+if [[ $PRIVATE_KEY != 0x* ]]; then
+  PRIVATE_KEY="0x$PRIVATE_KEY"
+fi
 
 CONFIG_FILE="hardhat.config.js"
 
-# Create the new config file content with the provided private key.
-# The placeholder "ADD YOUR PRIVATE KEY HERE" is replaced by the user's private key.
 cat > "$CONFIG_FILE" <<EOF
 require("@nomiclabs/hardhat-ethers");
 require("@nomiclabs/hardhat-vyper");
@@ -73,9 +69,9 @@ module.exports = {
     fluent_devnet1: {
       url: 'https://rpc.dev.thefluent.xyz/', 
       chainId: 20993, 
-      accounts : [
-        \`0x${PRIVATE_KEY}\`
-      ], // Replace with the private key of the deploying account
+      accounts: [
+        \`${PRIVATE_KEY}\`
+      ], 
     },
   },
   solidity: {
@@ -87,21 +83,17 @@ module.exports = {
 };
 EOF
 
-echo "Updated hardhat.config.js with your private key."
+echo "updated hardhat.config.js with your private key."
 
-# -------------------------------
-# Show Wallet Balance
-# -------------------------------
-# Create a temporary script to check the wallet balance
+
 cat > check-balance.js <<EOF
 const { ethers } = require("hardhat");
 
 async function main() {
   const provider = ethers.getDefaultProvider("https://rpc.dev.thefluent.xyz/");
-  // Create a wallet instance using the private key and provider
   const wallet = new ethers.Wallet(process.argv[2], provider);
   const balance = await wallet.getBalance();
-  console.log("Your wallet balance is:", ethers.utils.formatEther(balance), "ETH");
+  console.log("Your fluent eth balance is:", ethers.utils.formatEther(balance), "ETH");
 }
 
 main()
@@ -112,14 +104,12 @@ main()
   });
 EOF
 
-echo "Fetching your wallet balance..."
+echo "fetching your wallet balance..."
 node check-balance.js "$PRIVATE_KEY"
 rm check-balance.js
 
-# -------------------------------
-# Prepare to Compile and Deploy
-# -------------------------------
-echo "Preparing to Compile Script..."
+
+echo "preparing to compile script..."
 cd contracts
 cat > Hello.sol <<EOF
 // SPDX-License-Identifier: MIT
