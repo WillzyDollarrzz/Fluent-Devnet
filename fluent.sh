@@ -38,21 +38,28 @@ EOF
 
 npm install
 
-read -p "Have you claimed faucet tokens from https://faucet.dev.gblend.xyz/? (y/n): " faucetClaimed
+while true; do
+  read -p "Have you claimed faucet tokens from https://faucet.dev.gblend.xyz/? (y/n): " faucetClaimed
 
-if [[ "$faucetClaimed" =~ ^[Nn]$ ]]; then
-  echo "Please follow these steps to claim your tokens:"
+  if [[ "$faucetClaimed" =~ ^[Yy]$ ]]; then
+    break
+  fi
+
+  echo "Please follow these steps to claim devnet token:"
   echo "  1. Visit: https://faucet.dev.gblend.xyz/"
   echo "  2. Input your ETH address."
   echo "  3. Complete the captcha."
   echo "  4. Click 'Request Tokens'."
   
-  read -p "Are you done now? (y/n): " doneFaucet
-  if [[ ! "$doneFaucet" =~ ^[Yy]$ ]]; then
+  while true; do
+    read -p "Completed now? (y/n): " doneFaucet
+    if [[ "$doneFaucet" =~ ^[Yy]$ ]]; then
+      break 2
+    fi
     echo "PLEASE COMPLETE THE ABOVE STEPS"
-    exit 1
-  fi
-fi
+  done
+
+done
 
 read -p "enter your private key: " PRIVATE_KEY
 
@@ -74,7 +81,7 @@ module.exports = {
       url: 'https://rpc.dev.thefluent.xyz/', 
       chainId: 20993, 
       accounts: [
-        \`${PRIVATE_KEY}\`
+        \`\${PRIVATE_KEY}\`
       ], 
     },
   },
@@ -88,7 +95,6 @@ module.exports = {
 EOF
 
 echo "updated hardhat.config.js with your private key."
-
 
 cat > check-balance.js <<EOF
 const { ethers } = require("hardhat");
@@ -111,7 +117,6 @@ EOF
 echo "fetching your wallet balance..."
 node check-balance.js "$PRIVATE_KEY"
 rm check-balance.js
-
 
 echo "preparing to compile script..."
 cd contracts
@@ -153,7 +158,7 @@ async function main() {
 
   console.log("Contract address:", contract.address);
 
-  const explorerUrl = \`https://blockscout.dev.gblend.xyz/tx/\${transactionHash}\`;
+  const explorerUrl = \`https://blockscout.dev.thefluent.xyz/tx/\${transactionHash}\`;
   console.log("Transaction link:", explorerUrl);
 }
 
