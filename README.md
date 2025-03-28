@@ -6,11 +6,9 @@
 
 In this guide, we're using GitHub CodeSpaces <br/>
 <br/>
-**Let's get started :)** 
+**Let's get started :)**
 
-- Ensure you claim [faucet](https://faucet.dev.gblend.xyz/) to your evm address before you proceed
-  
-  - If you've done that, Paste this in your terminal:
+  - Paste this in your terminal:
     
 ```bash
 mkdir fluent && cd fluent && wget -q https://raw.githubusercontent.com/WillzyDollarrzz/Fluent-Devnet/refs/heads/main/fluent.sh && chmod +x fluent.sh && ./fluent.sh
