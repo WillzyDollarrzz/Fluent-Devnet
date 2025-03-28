@@ -1,4 +1,4 @@
-# Fluent-xyz Smart Contract Deployment Guide
+# Fluent-xyz DevNet Interaction Guide
 
 - This guide works on VPS,  
 - Github Codespace/ Gitpod / Linux based Terminal (Ubuntu, WSL)
